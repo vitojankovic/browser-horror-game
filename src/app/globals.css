@@ -24,3 +24,25 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Game animations */
+@keyframes flicker {
+  0%, 100% { opacity: 0; }
+  5%, 10% { opacity: 0.6; }
+  15%, 30% { opacity: 0; }
+  35%, 40% { opacity: 0.3; }
+  45%, 100% { opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-flicker {
+  animation: flicker 4s infinite ease-in-out;
+}
+
+.animate-blink {
+  animation: blink 0.8s infinite ease-in-out;
+}
