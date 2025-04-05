@@ -44,7 +44,7 @@ export default function CommandInput({ onSubmit }: CommandInputProps) {
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex w-full">
-        <div className="text-green-500 mr-2 font-mono text-base">></div>
+        <div className="text-green-500 mr-2 font-mono text-base">{'>'}</div>
         <input
           ref={inputRef}
           type="text"

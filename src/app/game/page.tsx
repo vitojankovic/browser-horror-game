@@ -9,7 +9,6 @@ import { initialGameState, processCommand } from './gameLogic';
 
 export default function Game() {
   const [gameState, setGameState] = useState(initialGameState);
-  const [message, setMessage] = useState(initialGameState.currentScene.description);
   const [gameHistory, setGameHistory] = useState<string[]>([initialGameState.currentScene.description]);
   const [showHelp, setShowHelp] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -28,7 +27,6 @@ export default function Game() {
     
     const result = processCommand(command.toLowerCase(), gameState);
     setGameState(result.newState);
-    setMessage(result.message);
     setGameHistory(prev => [...prev, `> ${command}`, result.message]);
 
     // Play sound if there's a jumpscare
