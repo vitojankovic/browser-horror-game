@@ -1,5 +1,5 @@
 export interface GameObject {
-  id?: string;
+  id: string;
   position: {
     x: number;
     y: number;
@@ -13,6 +13,18 @@ export interface GameObject {
   shadow?: string;
   borderRadius?: string;
   zIndex?: number;
+  opacity?: number;
+  flickering?: boolean;
+  floating?: boolean;
+  pulsing?: boolean;
+}
+
+export interface LightSource {
+  x: number;
+  y: number;
+  radius: number;
+  color: string;
+  intensity?: number;
 }
 
 export interface Scene {
@@ -21,6 +33,7 @@ export interface Scene {
   description: string;
   backgroundColor?: string;
   objects?: GameObject[];
+  lightSource?: LightSource;
   exits: {
     [direction: string]: string;
   };
@@ -44,6 +57,7 @@ export interface GameState {
   jumpscare: boolean;
   gameOver: boolean;
   endingType?: 'good' | 'bad' | 'neutral';
+  scenes?: { [key: string]: Scene }; // Reference to all scenes for UI
 }
 
 export interface CommandResult {

@@ -9,9 +9,17 @@ const scenes: { [key: string]: Scene } = {
     description: 'You find yourself in a dimly lit hallway. The wallpaper is peeling, revealing dark stains underneath. To the north is a door that appears to be slightly ajar. To the east is a doorway covered by tattered curtains. You hear faint whispering coming from somewhere.',
     backgroundColor: '#121212',
     flickering: true,
+    lightSource: {
+      x: 50,
+      y: 10,
+      radius: 150,
+      color: 'rgba(255, 250, 204, 0.2)',
+      intensity: 0.3
+    },
     objects: [
       // Door to the north
       {
+        id: 'door',
         position: { x: 50, y: 30 },
         size: { width: 60, height: 120 },
         color: '#3b2e1d',
@@ -19,11 +27,28 @@ const scenes: { [key: string]: Scene } = {
       },
       // Curtain to the east
       {
+        id: 'curtain',
         position: { x: 80, y: 40 },
         size: { width: 40, height: 100 },
         color: '#5a3333',
         transform: 'skewY(5deg)',
-      }
+      },
+      // Floor
+      {
+        id: 'floor',
+        position: { x: 0, y: 90 },
+        size: { width: 100, height: 10 },
+        color: '#1a1a1a',
+        zIndex: 0
+      },
+      // Ceiling
+      {
+        id: 'ceiling',
+        position: { x: 0, y: 0 },
+        size: { width: 100, height: 10 },
+        color: '#1a1a1a',
+        zIndex: 0
+      },
     ],
     exits: {
       'north': 'bedroom',
@@ -56,15 +81,24 @@ const scenes: { [key: string]: Scene } = {
     name: 'Abandoned Bedroom',
     description: 'You enter a small bedroom. A rusty bed frame sits in the corner, mattress rotted away. A dresser with a cracked mirror stands against the wall. The window is boarded up. There\'s a strange music box on the dresser. The door to the south leads back to the hallway.',
     backgroundColor: '#0d0d14',
+    lightSource: {
+      x: 75,
+      y: 30,
+      radius: 100,
+      color: 'rgba(150, 150, 255, 0.1)',
+      intensity: 0.4
+    },
     objects: [
       // Bed frame
       {
+        id: 'bed',
         position: { x: 15, y: 60 },
         size: { width: 130, height: 80 },
         color: '#392d2d',
       },
       // Dresser
       {
+        id: 'dresser',
         position: { x: 70, y: 40 },
         size: { width: 90, height: 60 },
         color: '#3b2e1d',
@@ -72,16 +106,27 @@ const scenes: { [key: string]: Scene } = {
       },
       // Window (boarded)
       {
+        id: 'window',
         position: { x: 70, y: 15 },
         size: { width: 70, height: 60 },
         color: '#222',
       },
       // Music box
       {
+        id: 'music-box',
         position: { x: 75, y: 35 },
         size: { width: 20, height: 15 },
         color: '#70544c',
         zIndex: 2,
+        pulsing: true
+      },
+      // Floor
+      {
+        id: 'floor',
+        position: { x: 0, y: 90 },
+        size: { width: 100, height: 10 },
+        color: '#1a1a1a',
+        zIndex: 0
       },
     ],
     exits: {
@@ -126,15 +171,24 @@ const scenes: { [key: string]: Scene } = {
     description: 'The kitchen is in ruins. Cabinets hang open, broken dishes scattered across the floor. A rusted refrigerator stands in the corner, door ajar. The sink is filled with a dark substance that doesn\'t look like water. There\'s a door that seems to lead to a basement, but it\'s locked. The hallway is back to the west.',
     backgroundColor: '#1a1a1c',
     flickering: true,
+    lightSource: {
+      x: 20,
+      y: 20,
+      radius: 120,
+      color: 'rgba(255, 220, 180, 0.15)',
+      intensity: 0.25
+    },
     objects: [
       // Refrigerator
       {
+        id: 'refrigerator',
         position: { x: 15, y: 30 },
         size: { width: 60, height: 110 },
         color: '#444',
       },
       // Sink
       {
+        id: 'sink',
         position: { x: 60, y: 50 },
         size: { width: 80, height: 40 },
         color: '#333',
@@ -142,9 +196,26 @@ const scenes: { [key: string]: Scene } = {
       },
       // Basement door
       {
+        id: 'basement-door',
         position: { x: 85, y: 35 },
         size: { width: 50, height: 100 },
         color: '#2d2318',
+      },
+      // Floor
+      {
+        id: 'floor',
+        position: { x: 0, y: 90 },
+        size: { width: 100, height: 10 },
+        color: '#1a1a1a',
+        zIndex: 0
+      },
+      // Broken dishes
+      {
+        id: 'dishes',
+        position: { x: 40, y: 85 },
+        size: { width: 60, height: 10 },
+        color: '#333',
+        zIndex: 1
       },
     ],
     exits: {
@@ -184,20 +255,47 @@ const scenes: { [key: string]: Scene } = {
     name: 'Dark Basement',
     description: 'The basement is pitch black and smells of damp earth and decay. Your footsteps echo on the concrete floor. There\'s a single bare light bulb hanging from the ceiling, providing minimal light. In the corner, you see a child\'s rocking chair moving slowly back and forth. No one is sitting in it.',
     backgroundColor: '#0a0a0a',
+    lightSource: {
+      x: 50,
+      y: 10,
+      radius: 80,
+      color: 'rgba(255, 255, 200, 0.1)',
+      intensity: 0.2
+    },
     objects: [
       // Light bulb
       {
+        id: 'light-bulb',
         position: { x: 50, y: 10 },
         size: { width: 10, height: 20 },
         color: '#fffacc',
         shadow: '0 0 50px rgba(255,250,204,0.3)',
+        flickering: true
       },
       // Rocking chair
       {
+        id: 'rocking-chair',
         position: { x: 75, y: 60 },
         size: { width: 40, height: 60 },
         color: '#2b2018',
         transform: 'rotate(5deg)',
+        floating: true
+      },
+      // Floor
+      {
+        id: 'floor',
+        position: { x: 0, y: 95 },
+        size: { width: 100, height: 5 },
+        color: '#1a1a1a',
+        zIndex: 0
+      },
+      // Wall with hidden passage
+      {
+        id: 'hidden-wall',
+        position: { x: 0, y: 20 },
+        size: { width: 100, height: 80 },
+        color: '#0d0d0d',
+        zIndex: 0
       },
     ],
     exits: {
@@ -229,9 +327,17 @@ const scenes: { [key: string]: Scene } = {
     name: 'Hidden Chamber',
     description: 'You\'ve discovered a small, hidden room. The walls are covered in children\'s drawings, but the images are disturbing - dark figures with long arms and no faces. In the center of the room is a small altar with a porcelain doll placed on it. The doll\'s face is cracked, and it seems to be watching you. There\'s something written in blood on the wall.',
     backgroundColor: '#0c0c12',
+    lightSource: {
+      x: 50,
+      y: 50,
+      radius: 200,
+      color: 'rgba(200, 0, 0, 0.1)',
+      intensity: 0.4
+    },
     objects: [
       // Altar
       {
+        id: 'altar',
         position: { x: 50, y: 60 },
         size: { width: 60, height: 40 },
         color: '#3b3329',
@@ -239,17 +345,44 @@ const scenes: { [key: string]: Scene } = {
       },
       // Doll
       {
+        id: 'doll',
         position: { x: 50, y: 55 },
         size: { width: 20, height: 30 },
         color: '#ddd6d6',
         zIndex: 2,
+        pulsing: true
       },
       // Writing on wall
       {
+        id: 'wall-writing',
         position: { x: 30, y: 30 },
         size: { width: 80, height: 40 },
         color: '#5a0f0f',
         transform: 'skewX(-5deg)',
+      },
+      // Floor
+      {
+        id: 'floor',
+        position: { x: 0, y: 90 },
+        size: { width: 100, height: 10 },
+        color: '#1a1a1a',
+        zIndex: 0
+      },
+      // Children's drawings (left wall)
+      {
+        id: 'drawings',
+        position: { x: 5, y: 20 },
+        size: { width: 30, height: 40 },
+        color: '#0f0f12',
+        zIndex: 0
+      },
+      // Children's drawings (right wall)
+      {
+        id: 'drawings-right',
+        position: { x: 70, y: 25 },
+        size: { width: 25, height: 35 },
+        color: '#0f0f12',
+        zIndex: 0
       },
     ],
     exits: {
@@ -276,7 +409,7 @@ const scenes: { [key: string]: Scene } = {
         jumpscare: true,
       },
       'destroy doll': {
-        description: 'You smash the doll against the altar. As it breaks, a blinding light fills the room, and you hear a terrible scream fading away. You feel the evil presence dissipating. You\'ve defeated whatever was haunting this place.',
+        description: "You smash the doll against the altar. As it breaks, a blinding light fills the room, and you hear a terrible scream fading away. You feel the evil presence dissipating. You've defeated whatever was haunting this place.",
         effect: 'goodEnding',
       },
       'embrace doll': {
@@ -299,6 +432,7 @@ export const initialGameState: GameState = {
   visitedScenes: ['hallway'],
   jumpscare: false,
   gameOver: false,
+  scenes: scenes, // Make scenes available to UI
 };
 
 // Process user commands
@@ -309,7 +443,7 @@ export function processCommand(input: string, state: GameState): CommandResult {
     jumpscare: false,
   };
   
-  let result = {
+  const result = {
     message: "I don't understand that command.",
     newState,
     jumpscare: false,
