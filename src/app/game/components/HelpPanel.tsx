@@ -72,7 +72,7 @@ export default function HelpPanel({ closeHelp }: HelpPanelProps) {
             <ul className="space-y-2">
               {section.commands.map((command, cmdIdx) => (
                 <li key={cmdIdx} className="flex flex-col">
-                  <span className="text-green-400 font-mono">"{command.cmd}"</span>
+                  <span className="text-green-400 font-mono">&quot;{command.cmd}&quot;</span>
                   <span className="text-gray-400 text-sm">{command.desc}</span>
                 </li>
               ))}
@@ -89,7 +89,7 @@ export default function HelpPanel({ closeHelp }: HelpPanelProps) {
           <li>Some actions might trigger jump scares!</li>
           <li>There are multiple endings to discover.</li>
           <li>Items you collect may be used in different rooms.</li>
-          <li>If you're stuck, try using different verbs (push, pull, open, etc.)</li>
+          <li>If you&apos;re stuck, try using different verbs (push, pull, open, etc.)</li>
         </ul>
       </div>
     </div>

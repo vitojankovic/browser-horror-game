@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Scene } from '../types';
 import GameObjectRenderer from './GameObjects';
-import { GiCurledTentacle, GiGhost } from 'react-icons/gi';
+import { GiGhost } from 'react-icons/gi';
 
 interface GameSceneProps {
   currentScene: Scene;

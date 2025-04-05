@@ -3,23 +3,18 @@
 import React from 'react';
 import { GameObject } from '../types';
 import { 
-  FaDoorClosed, FaWindowMaximize, FaBed, FaChair, FaMusic, 
-  FaSink, FaBook, FaSkull, FaGhost, FaChild,
-  FaQuestion, FaKey, FaLightbulb, FaWater, FaFlask,
+  FaDoorClosed, FaWindowMaximize, FaBed, FaMusic, 
+  FaSink, FaChild, FaQuestion, FaLightbulb,
   FaRegSquare, FaSquare
 } from 'react-icons/fa';
 import { 
-  GiCurledTentacle, GiCrossMark, GiCandleFlame, GiDoorway, 
-  GiWoodenCrate, GiCultist, GiHangingSpider, GiScrollQuill, 
-  GiStoneBlock, GiPaperBomb, GiClothes, GiWaterDrop,
-  GiCandlestick, GiMirror, GiIceCreamCone, GiWoodBeam,
-  GiWoodenChair, GiCauldron, GiOldLantern, GiBloodySword,
-  GiPlainSquare, GiWoodCabin
+  GiCurledTentacle, GiWoodenCrate, GiScrollQuill, 
+  GiStoneBlock, GiClothes, 
+  GiWoodenChair, GiBloodySword
 } from 'react-icons/gi';
-import { MdBloodtype, MdDarkMode } from 'react-icons/md';
-import { RiDoorClosedLine, RiFootprintFill } from 'react-icons/ri';
+import { RiFootprintFill } from 'react-icons/ri';
 import { BsSquareFill } from 'react-icons/bs';
-import { TbStairsDown, TbRefrigerator } from 'react-icons/tb';
+import { TbStairsDown, TbFridge } from 'react-icons/tb';
 
 interface GameObjectProps {
   object: GameObject;
@@ -43,7 +38,7 @@ export default function GameObjectRenderer({ object }: GameObjectProps) {
       case 'dresser':
         return <GiWoodenCrate />;
       case 'mirror':
-        return <GiMirror />;
+        return <FaRegSquare />;
       case 'window':
         return <FaWindowMaximize />;
       case 'music-box':
@@ -51,7 +46,7 @@ export default function GameObjectRenderer({ object }: GameObjectProps) {
       
       // Kitchen objects
       case 'refrigerator':
-        return <TbRefrigerator />;
+        return <TbFridge />;
       case 'sink':
         return <FaSink />;
       case 'basement-door':
@@ -81,7 +76,7 @@ export default function GameObjectRenderer({ object }: GameObjectProps) {
       
       // Generic objects
       case 'floor':
-        return <GiPlainSquare />;
+        return <FaSquare />;
       case 'ceiling':
         return <FaSquare />;
       case 'wall':
