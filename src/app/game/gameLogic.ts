@@ -469,7 +469,7 @@ export function processCommand(input: string, state: GameState): CommandResult {
   const target = words.slice(1).join(' ');
   
   // Command: Look
-  if (command === 'look' || command === 'examine') {
+  if (command === 'look') {
     if (!target || target === 'around' || target === 'room') {
       return {
         message: state.currentScene.description,
@@ -509,9 +509,39 @@ export function processCommand(input: string, state: GameState): CommandResult {
       jumpscare: false,
     };
   }
+
+  // Command: Examine (more detailed than look)
+  if (command === 'examine') {
+    if (!target) {
+      return {
+        message: "Examine what?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    const interaction = state.currentScene.interactions[target];
+    if (interaction) {
+      // For examine, provide more detailed descriptions
+      const detailedDescription = interaction.description + 
+        (interaction.effect ? "\n\nYou sense something significant about this object..." : "");
+      
+      return {
+        message: detailedDescription,
+        newState,
+        jumpscare: !!interaction.jumpscare,
+      };
+    }
+    
+    return {
+      message: `You examine the ${target} carefully but find nothing unusual.`,
+      newState,
+      jumpscare: false,
+    };
+  }
   
-  // Commands: Go, Move, Walk
-  if (command === 'go' || command === 'move' || command === 'walk') {
+  // Command: Go (primary movement)
+  if (command === 'go') {
     if (!target) {
       return {
         message: "Go where?",
@@ -552,18 +582,98 @@ export function processCommand(input: string, state: GameState): CommandResult {
       jumpscare: false,
     };
   }
-  
-  // Command: Open, Use, Interact
-  if (command === 'open' || command === 'use' || command === 'play' || command === 'push' || command === 'unlock' || command === 'read') {
+
+  // Command: Move (for pushing objects)
+  if (command === 'move') {
     if (!target) {
       return {
-        message: `${command.charAt(0).toUpperCase() + command.slice(1)} what?`,
+        message: "Move what?",
         newState,
         jumpscare: false,
       };
     }
     
-    // Handle special case: using specific items from inventory
+    const interaction = state.currentScene.interactions[`push ${target}`] || 
+                        state.currentScene.interactions[target];
+    
+    if (interaction) {
+      return {
+        message: interaction.description,
+        newState,
+        jumpscare: !!interaction.jumpscare,
+      };
+    }
+    
+    return {
+      message: `You can't move the ${target}.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+
+  // Command: Walk (for exploring hidden areas)
+  if (command === 'walk') {
+    if (!target) {
+      return {
+        message: "Walk where?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    if (target === 'around' && state.currentScene.id === 'basement') {
+      return {
+        message: "As you walk around the basement, you notice faint footprints leading to a section of the wall that looks slightly different from the rest.",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    return {
+      message: `You can't walk ${target} from here.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+  
+  // Command: Open (for doors and containers)
+  if (command === 'open') {
+    if (!target) {
+      return {
+        message: "Open what?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    const interaction = state.currentScene.interactions[`open ${target}`] || 
+                        state.currentScene.interactions[target];
+    
+    if (interaction) {
+      return {
+        message: interaction.description,
+        newState,
+        jumpscare: !!interaction.jumpscare,
+      };
+    }
+    
+    return {
+      message: `You can't open the ${target}.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+
+  // Command: Use (for items and tools)
+  if (command === 'use') {
+    if (!target) {
+      return {
+        message: "Use what?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
     if (target === 'rusty key' && state.inventory.includes('rusty key') && state.currentScene.id === 'kitchen') {
       newState.currentScene = scenes.basement;
       if (!newState.visitedScenes.includes('basement')) {
@@ -577,52 +687,27 @@ export function processCommand(input: string, state: GameState): CommandResult {
       };
     }
     
-    // Check for interaction
-    const interactionKey = `${command} ${target}`;
-    const directInteraction = state.currentScene.interactions[interactionKey];
-    const generalInteraction = state.currentScene.interactions[target];
+    return {
+      message: `You can't use the ${target} here.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+
+  // Command: Play (for interactive objects)
+  if (command === 'play') {
+    if (!target) {
+      return {
+        message: "Play what?",
+        newState,
+        jumpscare: false,
+      };
+    }
     
-    const interaction = directInteraction || generalInteraction;
+    const interaction = state.currentScene.interactions[`play ${target}`] || 
+                        state.currentScene.interactions[target];
     
     if (interaction) {
-      // Handle required items
-      if (interaction.requiresItem && !state.inventory.includes(interaction.requiresItem)) {
-        return {
-          message: `You need a ${interaction.requiresItem} for that.`,
-          newState,
-          jumpscare: false,
-        };
-      }
-      
-      // Handle special effects
-      if (interaction.effect) {
-        handleEffect(interaction.effect, newState);
-      }
-      
-      // Handle scene transitions
-      if (interaction.leadsTo) {
-        newState.currentScene = scenes[interaction.leadsTo];
-        if (!newState.visitedScenes.includes(interaction.leadsTo)) {
-          newState.visitedScenes.push(interaction.leadsTo);
-        }
-        
-        return {
-          message: `${interaction.description}\n\n${scenes[interaction.leadsTo].description}`,
-          newState,
-          jumpscare: !!interaction.jumpscare,
-        };
-      }
-      
-      // Handle item acquisition
-      if (interaction.givesItem && !newState.inventory.includes(interaction.givesItem)) {
-        newState.inventory.push(interaction.givesItem);
-        return {
-          message: `${interaction.description} You obtained: ${interaction.givesItem}.`,
-          newState,
-          jumpscare: !!interaction.jumpscare,
-        };
-      }
-      
       return {
         message: interaction.description,
         newState,
@@ -631,7 +716,95 @@ export function processCommand(input: string, state: GameState): CommandResult {
     }
     
     return {
-      message: `You can't ${command} that.`,
+      message: `You can't play with the ${target}.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+
+  // Command: Push (for moving heavy objects)
+  if (command === 'push') {
+    if (!target) {
+      return {
+        message: "Push what?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    if (target === 'wall' && state.currentScene.id === 'basement') {
+      newState.currentScene = scenes.secretRoom;
+      if (!newState.visitedScenes.includes('secretRoom')) {
+        newState.visitedScenes.push('secretRoom');
+      }
+      
+      return {
+        message: "You push against the wall and it gives way, revealing a hidden room.\n\n" + scenes.secretRoom.description,
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    return {
+      message: `You can't push the ${target}.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+
+  // Command: Unlock (for locked doors)
+  if (command === 'unlock') {
+    if (!target) {
+      return {
+        message: "Unlock what?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    if (target === 'basement door' && state.inventory.includes('rusty key') && state.currentScene.id === 'kitchen') {
+      newState.currentScene = scenes.basement;
+      if (!newState.visitedScenes.includes('basement')) {
+        newState.visitedScenes.push('basement');
+      }
+      
+      return {
+        message: "You unlock the basement door with the rusty key. It swings open with a creak.\n\n" + scenes.basement.description,
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    return {
+      message: `You can't unlock the ${target}.`,
+      newState,
+      jumpscare: false,
+    };
+  }
+
+  // Command: Read (for text and writing)
+  if (command === 'read') {
+    if (!target) {
+      return {
+        message: "Read what?",
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    const interaction = state.currentScene.interactions[`read ${target}`] || 
+                        state.currentScene.interactions[target];
+    
+    if (interaction) {
+      return {
+        message: interaction.description,
+        newState,
+        jumpscare: !!interaction.jumpscare,
+      };
+    }
+    
+    return {
+      message: `You can't read the ${target}.`,
       newState,
       jumpscare: false,
     };

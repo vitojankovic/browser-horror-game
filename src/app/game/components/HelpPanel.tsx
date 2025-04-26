@@ -11,44 +11,41 @@ export default function HelpPanel({ closeHelp }: HelpPanelProps) {
     {
       title: "Movement Commands",
       commands: [
-        { cmd: "go north", desc: "Move to the room to the north" },
-        { cmd: "go south", desc: "Move to the room to the south" },
-        { cmd: "go east", desc: "Move to the room to the east" },
-        { cmd: "go west", desc: "Move to the room to the west" },
-        { cmd: "go up/down", desc: "Climb stairs or enter basement" },
+        { cmd: "go [direction]", desc: "Move between rooms (e.g., go north)" },
+        { cmd: "walk around", desc: "Explore current area for hidden details" },
+        { cmd: "move [object]", desc: "Push or move objects (e.g., move wall)" },
       ]
     },
     {
-      title: "Look Commands",
+      title: "Examination Commands",
       commands: [
-        { cmd: "look", desc: "Examine your surroundings" },
-        { cmd: "look at [object]", desc: "Example: look at door" },
-        { cmd: "examine [object]", desc: "Example: examine mirror" },
+        { cmd: "look", desc: "Get a general view of your surroundings" },
+        { cmd: "look at [object]", desc: "Basic observation of an object" },
+        { cmd: "examine [object]", desc: "Detailed inspection of an object" },
       ]
     },
     {
       title: "Interaction Commands",
       commands: [
-        { cmd: "open [object]", desc: "Example: open music box" },
-        { cmd: "use [object]", desc: "Example: use key" },
-        { cmd: "push [object]", desc: "Example: push wall" },
-        { cmd: "play [object]", desc: "Example: play music box" },
-        { cmd: "read [object]", desc: "Example: read writing" },
+        { cmd: "open [object]", desc: "Open doors or containers" },
+        { cmd: "use [item]", desc: "Use an item from your inventory" },
+        { cmd: "push [object]", desc: "Push heavy objects or walls" },
+        { cmd: "play [object]", desc: "Interact with playable objects" },
+        { cmd: "unlock [door]", desc: "Unlock doors with keys" },
+        { cmd: "read [text]", desc: "Read writing or text" },
       ]
     },
     {
       title: "Item Commands",
       commands: [
-        { cmd: "take [item]", desc: "Example: take key" },
-        { cmd: "get [item]", desc: "Example: get teddy" },
-        { cmd: "inventory", desc: "Check what items you're carrying" },
+        { cmd: "take [item]", desc: "Pick up an item" },
+        { cmd: "inventory", desc: "Check your carried items" },
       ]
     },
     {
       title: "Special Commands",
       commands: [
-        { cmd: "listen", desc: "Listen for sounds" },
-        { cmd: "help", desc: "Toggle this help panel" },
+        { cmd: "help", desc: "Show this help panel" },
       ]
     },
   ];
