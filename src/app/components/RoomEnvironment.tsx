@@ -19,8 +19,8 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ scene }) => {
     canvas.width = 800;
     canvas.height = 600;
 
-    // Clear canvas
-    ctx.fillStyle = scene.backgroundColor;
+    // Clear canvas with default color if none provided
+    ctx.fillStyle = scene.backgroundColor || '#000000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw walls
@@ -47,13 +47,13 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ scene }) => {
     }
 
     // Draw objects
-    scene.objects.forEach(obj => {
+    (scene.objects || []).forEach(obj => {
       const x = obj.position.x * canvas.width / 100;
       const y = obj.position.y * canvas.height / 100;
       const width = obj.size.width * canvas.width / 100;
       const height = obj.size.height * canvas.height / 100;
 
-      ctx.fillStyle = obj.color;
+      ctx.fillStyle = obj.color || '#333333';
       if (obj.shadow) {
         ctx.shadowColor = obj.shadow;
         ctx.shadowBlur = 10;
