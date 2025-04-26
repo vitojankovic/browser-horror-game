@@ -272,6 +272,18 @@ const scenes: { [key: string]: Scene } = {
         description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
         givesItem: 'rusty key',
       },
+      'open cabinets': {
+        description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
+        givesItem: 'rusty key',
+      },
+      'check cabinets': {
+        description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
+        givesItem: 'rusty key',
+      },
+      'inspect cabinets': {
+        description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
+        givesItem: 'rusty key',
+      },
     },
   },
   
