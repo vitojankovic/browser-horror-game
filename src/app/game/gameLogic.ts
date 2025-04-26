@@ -244,10 +244,17 @@ const scenes: { [key: string]: Scene } = {
         description: 'The door is locked. You need to find a way to unlock it.',
       },
       'unlock basement door': {
-        description: 'You try to unlock the door, but you need a key or some other way to open it.',
+        description: 'You unlock the basement door with the rusty key. It swings open with a creak.',
+        requiresItem: 'rusty key',
+        leadsTo: 'basement',
+      },
+      'use rusty key': {
+        description: 'You use the rusty key to unlock the basement door. It swings open with a creak.',
+        leadsTo: 'basement',
       },
       'use key': {
-        description: 'You don\'t have a key in your inventory.',
+        description: 'You use the rusty key to unlock the basement door. It swings open with a creak.',
+        leadsTo: 'basement',
       },
       'cabinets': {
         description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
