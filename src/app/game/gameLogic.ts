@@ -201,6 +201,13 @@ const scenes: { [key: string]: Scene } = {
         size: { width: 50, height: 100 },
         color: '#2d2318',
       },
+      // Cabinets
+      {
+        id: 'cabinets',
+        position: { x: 30, y: 20 },
+        size: { width: 40, height: 60 },
+        color: '#3b2e1d',
+      },
       // Floor
       {
         id: 'floor',
@@ -243,6 +250,18 @@ const scenes: { [key: string]: Scene } = {
         description: 'You don\'t have a key in your inventory.',
       },
       'cabinets': {
+        description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
+        givesItem: 'rusty key',
+      },
+      'examine cabinets': {
+        description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
+        givesItem: 'rusty key',
+      },
+      'look at cabinets': {
+        description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
+        givesItem: 'rusty key',
+      },
+      'search cabinets': {
         description: 'You search through the cabinets and find an old rusty key hidden in the back of one.',
         givesItem: 'rusty key',
       },
