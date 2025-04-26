@@ -466,7 +466,7 @@ const scenes: { [key: string]: Scene } = {
 // Initial game state
 export const initialGameState: GameState = {
   currentScene: scenes.hallway,
-  inventory: [],
+  inventory: ['rusty key'],
   visitedScenes: ['hallway'],
   jumpscare: false,
   gameOver: false,
