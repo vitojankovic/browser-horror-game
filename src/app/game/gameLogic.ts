@@ -592,15 +592,6 @@ export function processCommand(input: string, state: GameState): CommandResult {
     if (state.currentScene.exits[target]) {
       const nextSceneId = state.currentScene.exits[target];
       
-      // Check if basement is locked
-      if (nextSceneId === 'basement' && !state.inventory.includes('rusty key') && !newState.visitedScenes.includes('basement')) {
-        return {
-          message: "The basement door is locked. You need to find a key.",
-          newState,
-          jumpscare: false,
-        };
-      }
-      
       // Move to the next scene
       newState.currentScene = scenes[nextSceneId];
       if (!newState.visitedScenes.includes(nextSceneId)) {
@@ -727,13 +718,13 @@ export function processCommand(input: string, state: GameState): CommandResult {
     }
     
     if (target === 'rusty key' && state.inventory.includes('rusty key') && state.currentScene.id === 'kitchen') {
-      newState.currentScene = scenes.basement;
+      // Add basement to visited scenes to allow going down
       if (!newState.visitedScenes.includes('basement')) {
         newState.visitedScenes.push('basement');
       }
       
       return {
-        message: "You use the rusty key to unlock the basement door. It swings open with a creak.\n\n" + scenes.basement.description,
+        message: "You use the rusty key to unlock the basement door. It swings open with a creak.",
         newState,
         jumpscare: false,
       };
@@ -815,13 +806,13 @@ export function processCommand(input: string, state: GameState): CommandResult {
     }
     
     if (target === 'basement door' && state.inventory.includes('rusty key') && state.currentScene.id === 'kitchen') {
-      newState.currentScene = scenes.basement;
+      // Add basement to visited scenes to allow going down
       if (!newState.visitedScenes.includes('basement')) {
         newState.visitedScenes.push('basement');
       }
       
       return {
-        message: "You unlock the basement door with the rusty key. It swings open with a creak.\n\n" + scenes.basement.description,
+        message: "You unlock the basement door with the rusty key. It swings open with a creak.",
         newState,
         jumpscare: false,
       };
