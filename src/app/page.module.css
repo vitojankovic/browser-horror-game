@@ -1,0 +1,93 @@
+.main {
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  position: relative;
+}
+
+.gameContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.gameContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  z-index: 2;
+}
+
+.sceneDescription {
+  margin-bottom: 20px;
+}
+
+.sceneDescription h2 {
+  color: #ff4444;
+  margin-bottom: 10px;
+}
+
+.inventory {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 5px;
+}
+
+.inventory h3 {
+  color: #ff4444;
+  margin-bottom: 5px;
+}
+
+.inventory ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inventory li {
+  color: #fff;
+  margin: 5px 0;
+}
+
+.commandForm {
+  display: flex;
+  gap: 10px;
+}
+
+.commandInput {
+  flex: 1;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.commandInput:focus {
+  outline: none;
+  border-color: #ff4444;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  background: #ff4444;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background: #ff0000;
+} 

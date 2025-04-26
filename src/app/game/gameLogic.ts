@@ -614,6 +614,20 @@ export function processCommand(input: string, state: GameState): CommandResult {
       };
     }
     
+    // Special case for basement access
+    if (target === 'down' && state.currentScene.id === 'kitchen' && state.inventory.includes('rusty key')) {
+      newState.currentScene = scenes.basement;
+      if (!newState.visitedScenes.includes('basement')) {
+        newState.visitedScenes.push('basement');
+      }
+      
+      return {
+        message: scenes.basement.description,
+        newState,
+        jumpscare: false,
+      };
+    }
+    
     return {
       message: `You can't go ${target} from here.`,
       newState,
