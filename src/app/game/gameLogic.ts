@@ -466,8 +466,8 @@ const scenes: { [key: string]: Scene } = {
 // Initial game state
 export const initialGameState: GameState = {
   currentScene: scenes.hallway,
-  inventory: ['rusty key'],
-  visitedScenes: ['hallway'],
+  inventory: ['rusty key', 'teddy bear'],
+  visitedScenes: ['hallway', 'kitchen', 'basement', 'secretRoom'],
   jumpscare: false,
   gameOver: false,
   scenes: scenes, // Make scenes available to UI
@@ -591,13 +591,7 @@ export function processCommand(input: string, state: GameState): CommandResult {
     // Check exits
     if (state.currentScene.exits[target]) {
       const nextSceneId = state.currentScene.exits[target];
-      
-      // Move to the next scene
       newState.currentScene = scenes[nextSceneId];
-      if (!newState.visitedScenes.includes(nextSceneId)) {
-        newState.visitedScenes.push(nextSceneId);
-      }
-      
       return {
         message: newState.currentScene.description,
         newState,
@@ -606,14 +600,20 @@ export function processCommand(input: string, state: GameState): CommandResult {
     }
     
     // Special case for basement access
-    if (target === 'down' && state.currentScene.id === 'kitchen' && state.inventory.includes('rusty key')) {
+    if (target === 'down' && state.currentScene.id === 'kitchen') {
       newState.currentScene = scenes.basement;
-      if (!newState.visitedScenes.includes('basement')) {
-        newState.visitedScenes.push('basement');
-      }
-      
       return {
         message: scenes.basement.description,
+        newState,
+        jumpscare: false,
+      };
+    }
+    
+    // Special case for secret room access
+    if (target === 'through' && state.currentScene.id === 'basement') {
+      newState.currentScene = scenes.secretRoom;
+      return {
+        message: scenes.secretRoom.description,
         newState,
         jumpscare: false,
       };
@@ -717,14 +717,9 @@ export function processCommand(input: string, state: GameState): CommandResult {
       };
     }
     
-    if (target === 'rusty key' && state.inventory.includes('rusty key') && state.currentScene.id === 'kitchen') {
-      // Add basement to visited scenes to allow going down
-      if (!newState.visitedScenes.includes('basement')) {
-        newState.visitedScenes.push('basement');
-      }
-      
+    if (target === 'rusty key' && state.currentScene.id === 'kitchen') {
       return {
-        message: "You use the rusty key to unlock the basement door. It swings open with a creak.",
+        message: "The basement door is already unlocked.",
         newState,
         jumpscare: false,
       };
@@ -805,14 +800,9 @@ export function processCommand(input: string, state: GameState): CommandResult {
       };
     }
     
-    if (target === 'basement door' && state.inventory.includes('rusty key') && state.currentScene.id === 'kitchen') {
-      // Add basement to visited scenes to allow going down
-      if (!newState.visitedScenes.includes('basement')) {
-        newState.visitedScenes.push('basement');
-      }
-      
+    if (target === 'basement door' && state.currentScene.id === 'kitchen') {
       return {
-        message: "You unlock the basement door with the rusty key. It swings open with a creak.",
+        message: "The basement door is already unlocked.",
         newState,
         jumpscare: false,
       };
